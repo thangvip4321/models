@@ -24,7 +24,7 @@ from __future__ import print_function
 import six
 import tensorflow as tf
 from tensorflow.contrib import quantize as contrib_quantize
-from tensorflow.contrib import tfprof as contrib_tfprof
+from tensorflow.contrib import tfprof as contrib_tfprof 
 from deeplab import common
 from deeplab import model
 from deeplab.datasets import data_generator
@@ -123,7 +123,7 @@ flags.DEFINE_float('adam_epsilon', 1e-08, 'Adam optimizer epsilon.')
 # When fine_tune_batch_norm=True, use at least batch size larger than 12
 # (batch size more than 16 is better). Otherwise, one could use smaller batch
 # size and set fine_tune_batch_norm=False.
-flags.DEFINE_integer('train_batch_size', 8,
+flags.DEFINE_integer('train_batch_size', 2,
                      'The number of images in each batch during training.')
 
 # For weight_decay, use 0.00004 for MobileNet-V2 or Xcpetion model variants.
@@ -425,7 +425,7 @@ def main(unused_argv):
 
     # Soft placement allows placing on CPU ops without GPU implementation.
     session_config = tf.ConfigProto(
-        allow_soft_placement=True, log_device_placement=False)
+        allow_soft_placement=True, log_device_placement=False,gpu_options = tf.GPUOptions(allow_growth=True))
 
     # Start the training.
     profile_dir = FLAGS.profile_logdir

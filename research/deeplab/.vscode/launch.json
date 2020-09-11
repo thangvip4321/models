@@ -1,0 +1,18 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "pythonPath": "/usr/bin/python3",
+            "cwd": "${workspaceFolder}/..",
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": ["--train_logdir","~/data/Road_data/log","--dataset","custom_seg","--dataset_dir"," ~/data/Road_data/" ]
+        }
+    ]
+}

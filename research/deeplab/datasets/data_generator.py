@@ -78,7 +78,15 @@ _CITYSCAPES_INFORMATION = DatasetDescriptor(
     num_classes=19,
     ignore_label=255,
 )
-
+_ROADSEG_INFORMATION = DatasetDescriptor(
+  splits_to_sizes={
+    'train':103,
+    "val":0,
+    "test":0,
+  },
+  num_classes=2,
+  ignore_label=255,
+)
 _PASCAL_VOC_SEG_INFORMATION = DatasetDescriptor(
     splits_to_sizes={
         'train': 1464,
@@ -103,6 +111,7 @@ _DATASETS_INFORMATION = {
     'cityscapes': _CITYSCAPES_INFORMATION,
     'pascal_voc_seg': _PASCAL_VOC_SEG_INFORMATION,
     'ade20k': _ADE20K_INFORMATION,
+    'custom_seg': _ROADSEG_INFORMATION
 }
 
 # Default file pattern of TFRecord of TensorFlow Example.
@@ -347,4 +356,5 @@ class Dataset(object):
     file_pattern = _FILE_PATTERN
     file_pattern = os.path.join(self.dataset_dir,
                                 file_pattern % self.split_name)
+    print(file_pattern)
     return tf.gfile.Glob(file_pattern)
