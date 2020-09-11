@@ -98,16 +98,23 @@ pip3 install tf-nightly
 
 #### Method 1: Install the TensorFlow Model Garden pip package
 
-**tf-models-nightly** is the nightly Model Garden package
-created daily automatically. pip will install all models
-and dependencies automatically.
+**tf-models-official** is the stable Model Garden package.
+pip will install all models and dependencies automatically.
 
 ```shell
-pip install tf-models-nightly
+pip install tf-models-official
 ```
 
 Please check out our [example](colab/fine_tuning_bert.ipynb)
 to learn how to use a PIP package.
+
+Note that **tf-models-official** may not include the latest changes in this
+github repo. To include latest changes, you may install **tf-models-nightly**,
+which is the nightly Model Garden package created daily automatically.
+
+```shell
+pip install tf-models-nightly
+```
 
 #### Method 2: Clone the source
 
@@ -139,3 +146,17 @@ pip3 install --user -r official/requirements.txt
 ## Contributions
 
 If you want to contribute, please review the [contribution guidelines](https://github.com/tensorflow/models/wiki/How-to-contribute).
+
+## Citing TF Official Model Garden
+
+To cite this repository:
+
+```
+@software{tfmodels2020github,
+  author = {Chen Chen and Xianzhi Du and Le Hou and Jaeyoun Kim and Pengchong
+  Jin and Jing Li and Yeqing Li and Abdullah Rashwan and Hongkun Yu},
+  title = {TensorFlow Official Model Garden},
+  url = {https://github.com/tensorflow/models/tree/master/official},
+  year = {2020},
+}
+```

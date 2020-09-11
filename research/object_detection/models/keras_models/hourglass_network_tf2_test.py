@@ -78,6 +78,12 @@ class HourglassFeatureExtractorTest(tf.test.TestCase, parameterized.TestCase):
     output = layer(np.zeros((2, 32, 32, 8), dtype=np.float32))
     self.assertEqual(output.shape, (2, 8, 8, 8))
 
+  def test_input_conv_block(self):
+    layer = hourglass.InputConvBlock(
+        out_channels_initial_conv=4, out_channels_residual_block=8)
+    output = layer(np.zeros((2, 32, 32, 8), dtype=np.float32))
+    self.assertEqual(output.shape, (2, 32, 32, 8))
+
   def test_encoder_decoder_block(self):
 
     layer = hourglass.EncoderDecoderBlock(
@@ -94,6 +100,31 @@ class HourglassFeatureExtractorTest(tf.test.TestCase, parameterized.TestCase):
     outputs = model(np.zeros((2, 64, 64, 3), dtype=np.float32))
     self.assertEqual(outputs[0].shape, (2, 16, 16, 6))
     self.assertEqual(outputs[1].shape, (2, 16, 16, 6))
+
+
+@unittest.skipIf(tf_version.is_tf1(), 'Skipping TF2.X only test.')
+class HourglassDepthTest(tf.test.TestCase):
+
+  def test_hourglass_104(self):
+
+    net = hourglass.hourglass_104()
+    self.assertEqual(hourglass.hourglass_depth(net), 104)
+
+  def test_hourglass_10(self):
+    net = hourglass.hourglass_10(2)
+    self.assertEqual(hourglass.hourglass_depth(net), 10)
+
+  def test_hourglass_20(self):
+    net = hourglass.hourglass_20(2)
+    self.assertEqual(hourglass.hourglass_depth(net), 20)
+
+  def test_hourglass_32(self):
+    net = hourglass.hourglass_32(2)
+    self.assertEqual(hourglass.hourglass_depth(net), 32)
+
+  def test_hourglass_52(self):
+    net = hourglass.hourglass_52(2)
+    self.assertEqual(hourglass.hourglass_depth(net), 52)
 
 
 if __name__ == '__main__':

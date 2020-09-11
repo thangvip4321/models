@@ -94,7 +94,8 @@ class BertPretrainer(tf.keras.Model):
     if isinstance(cls_output, list):
       cls_output = cls_output[-1]
     sequence_output_length = sequence_output.shape.as_list()[1]
-    if sequence_output_length < num_token_predictions:
+    if sequence_output_length is not None and (sequence_output_length <
+                                               num_token_predictions):
       raise ValueError(
           "The passed network's output length is %s, which is less than the "
           'requested num_token_predictions %s.' %
@@ -182,7 +183,11 @@ class BertPretrainerV2(tf.keras.Model):
 
     self.encoder_network = encoder_network
     inputs = copy.copy(self.encoder_network.inputs)
-    sequence_output, _ = self.encoder_network(inputs)
+    outputs = self.encoder_network(inputs)
+    if isinstance(outputs, list):
+      sequence_output = outputs[0]
+    else:
+      sequence_output = outputs['sequence_output']
 
     self.classification_heads = classification_heads or []
     if len(set([cls.name for cls in self.classification_heads])) != len(

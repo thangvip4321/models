@@ -102,7 +102,8 @@ class DetectionModel(six.with_metaclass(abc.ABCMeta, _BaseClass)):
     Args:
       field: a string key, options are
         fields.BoxListFields.{boxes,classes,masks,keypoints,
-        keypoint_visibilities, densepose_*}
+        keypoint_visibilities, densepose_*, track_ids,
+        temporal_offsets, track_match_flags}
         fields.InputDataFields.is_annotated.
 
     Returns:
@@ -123,7 +124,7 @@ class DetectionModel(six.with_metaclass(abc.ABCMeta, _BaseClass)):
     Args:
       field: a string key, options are
         fields.BoxListFields.{boxes,classes,masks,keypoints,
-        keypoint_visibilities, densepose_*} or
+        keypoint_visibilities, densepose_*, track_ids} or
         fields.InputDataFields.is_annotated.
 
     Returns:
@@ -303,6 +304,9 @@ class DetectionModel(six.with_metaclass(abc.ABCMeta, _BaseClass)):
       groundtruth_dp_num_points_list=None,
       groundtruth_dp_part_ids_list=None,
       groundtruth_dp_surface_coords_list=None,
+      groundtruth_track_ids_list=None,
+      groundtruth_temporal_offsets_list=None,
+      groundtruth_track_match_flags_list=None,
       groundtruth_weights_list=None,
       groundtruth_confidences_list=None,
       groundtruth_is_crowd_list=None,
@@ -342,6 +346,14 @@ class DetectionModel(six.with_metaclass(abc.ABCMeta, _BaseClass)):
         shape [num_boxes, max_sampled_points, 4] containing the DensePose
         surface coordinates for each sampled point. Note that there may be
         padding.
+      groundtruth_track_ids_list: a list of 1-D tf.int32 tensors of shape
+        [num_boxes] containing the track IDs of groundtruth objects.
+      groundtruth_temporal_offsets_list: a list of 2-D tf.float32 tensors
+        of shape [num_boxes, 2] containing the spatial offsets of objects'
+        centers compared with the previous frame.
+      groundtruth_track_match_flags_list: a list of 1-D tf.float32 tensors
+        of shape [num_boxes] containing 0-1 flags that indicate if an object
+        has existed in the previous frame.
       groundtruth_weights_list: A list of 1-D tf.float32 tensors of shape
         [num_boxes] containing weights for groundtruth boxes.
       groundtruth_confidences_list: A list of 2-D tf.float32 tensors of shape
@@ -391,6 +403,17 @@ class DetectionModel(six.with_metaclass(abc.ABCMeta, _BaseClass)):
       self._groundtruth_lists[
           fields.BoxListFields.densepose_surface_coords] = (
               groundtruth_dp_surface_coords_list)
+    if groundtruth_track_ids_list:
+      self._groundtruth_lists[
+          fields.BoxListFields.track_ids] = groundtruth_track_ids_list
+    if groundtruth_temporal_offsets_list:
+      self._groundtruth_lists[
+          fields.BoxListFields.temporal_offsets] = (
+              groundtruth_temporal_offsets_list)
+    if groundtruth_track_match_flags_list:
+      self._groundtruth_lists[
+          fields.BoxListFields.track_match_flags] = (
+              groundtruth_track_match_flags_list)
     if groundtruth_is_crowd_list:
       self._groundtruth_lists[
           fields.BoxListFields.is_crowd] = groundtruth_is_crowd_list

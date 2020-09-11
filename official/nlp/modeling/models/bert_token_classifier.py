@@ -67,9 +67,13 @@ class BertTokenClassifier(tf.keras.Model):
 
     # Because we have a copy of inputs to create this Model object, we can
     # invoke the Network object with its own input tensors to start the Model.
-    sequence_output, _ = network(inputs)
-    sequence_output = tf.keras.layers.Dropout(
-        rate=dropout_rate)(sequence_output)
+    outputs = network(inputs)
+    if isinstance(outputs, list):
+      sequence_output = outputs[0]
+    else:
+      sequence_output = outputs['sequence_output']
+    sequence_output = tf.keras.layers.Dropout(rate=dropout_rate)(
+        sequence_output)
 
     self.classifier = tf.keras.layers.Dense(
         num_classes,
